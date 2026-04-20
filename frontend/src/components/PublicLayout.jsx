@@ -5,28 +5,7 @@ import Navbar from './Navbar'
 
 const PublicLayout = () => {
   return (
-    <div className="relative min-h-screen bg-background transition-colors duration-300">
-      {/* Global decorative background shapes */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: [0.05, 0.1, 0.05]
-          }}
-          transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-          className="absolute -top-[10%] -right-[10%] h-[45rem] w-[45rem] rounded-full bg-primary/10 blur-[120px]"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1, 1.1, 1],
-            rotate: [0, -90, 0],
-            opacity: [0.03, 0.08, 0.03]
-          }}
-          transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
-          className="absolute -bottom-[10%] -left-[10%] h-[35rem] w-[35rem] rounded-full bg-blue-500/5 blur-[100px]"
-        />
-      </div>
+    <div className="relative min-h-screen bg-background">
 
       <Navbar />
 

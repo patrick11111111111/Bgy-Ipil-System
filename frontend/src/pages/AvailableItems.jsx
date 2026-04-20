@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { Search, Filter, Box, Tag, ChevronRight, Info } from 'lucide-react'
+import { Search, Filter, Box, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -13,8 +12,6 @@ const AvailableItems = () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
         const response = await axios.get(`${apiUrl}/api/inventory`)
-        // Filter out items that are actual borrow requests if needed, 
-        // but for now we assume this returns all items the admin added.
         setItems(response.data)
       } catch (error) {
         console.error("Error fetching items:", error)
@@ -26,23 +23,23 @@ const AvailableItems = () => {
   }, [])
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div className="flex flex-col gap-10 py-4">
+      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Municipal Inventory</h1>
-          <p className="text-muted-foreground">Resources available for community borrowing.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Municipal Inventory</h1>
+          <p className="text-slate-500 mt-1">Resources currently available in the warehouse.</p>
         </div>
         
-        <div className="flex gap-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <div className="flex flex-wrap gap-3">
+          <div className="relative min-w-[280px]">
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input 
               type="text" 
               placeholder="Search items..." 
-              className="rounded-full border bg-background px-10 py-2 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-12 py-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
             />
           </div>
-          <button className="flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm font-medium hover:bg-accent transition-colors">
+          <button className="flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
             <Filter className="h-4 w-4" /> Filter
           </button>
         </div>
@@ -50,65 +47,60 @@ const AvailableItems = () => {
 
       {loading ? (
         <div className="flex h-64 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </div>
       ) : items.length === 0 ? (
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed p-16 text-center"
-        >
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-foreground">
-            <Box className="h-8 w-8" />
+        <div className="flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-800 p-20 text-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-800 text-slate-300">
+            <Box className="h-10 w-10" />
           </div>
-          <div>
-            <h3 className="text-xl font-bold">No Items Available Yet</h3>
-            <p className="text-muted-foreground mt-2 max-w-sm">
-              The municipal administration is currently updating the inventory. Please check back later or contact the admin office.
+          <div className="space-y-2">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">The warehouse is currently empty</h3>
+            <p className="text-slate-500 max-w-sm mx-auto">
+              Staff are currently updating the inventory lists. Please check back in a bit or contact the office.
             </p>
           </div>
-        </motion.div>
+        </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item, i) => (
-            <motion.div
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item) => (
+            <div
               key={item._id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.05 }}
-              className="group card-flat overflow-hidden rounded-2xl transition-all hover:shadow-lg"
+              className="group flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all hover:border-primary/30"
             >
-              <div className="h-48 w-full bg-accent relative overflow-hidden">
+              <div className="h-52 w-full bg-slate-100 dark:bg-slate-800 relative">
                 {item.picture ? (
-                   <img src={item.picture} alt={item.itemName} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                   <img src={item.picture} alt={item.itemName} className="h-full w-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300" />
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/20">
+                  <div className="absolute inset-0 flex items-center justify-center text-slate-300 dark:text-slate-700">
                     <Box className="h-12 w-12" />
                   </div>
                 )}
-                <div className="absolute top-3 left-3">
-                  <span className="rounded-full bg-primary/90 px-3 py-1 text-xs font-bold text-primary-foreground backdrop-blur-md">
+                <div className="absolute top-4 left-4">
+                  <span className="rounded-lg bg-white/90 dark:bg-slate-900/90 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white border shadow-sm">
                     {item.condition}
                   </span>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold group-hover:text-primary transition-colors mb-2 text-slate-900 dark:text-white">{item.itemName}</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4">
+              <div className="p-8 flex flex-col flex-1">
+                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white group-hover:text-primary transition-colors">{item.itemName}</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-6 leading-relaxed">
                   {item.description || "No description provided for this municipal resource."}
                 </p>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Available Quantity</span>
-                  <span className="text-xl font-bold text-primary">{item.quantity}</span>
+                
+                <div className="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between mb-6">
+                  <span className="text-xs font-bold uppercase tracking-widest text-slate-400">In Stock</span>
+                  <span className="text-2xl font-black text-slate-900 dark:text-white">{item.quantity}</span>
                 </div>
+
                 <Link
                   to={`/items/${item._id}`}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3 text-sm font-bold transition-all hover:bg-primary hover:text-primary-foreground"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 dark:bg-slate-800 py-4 text-sm font-bold text-white transition-all hover:bg-primary"
                 >
                   View Details <ChevronRight className="h-4 w-4" />
                 </Link>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       )}

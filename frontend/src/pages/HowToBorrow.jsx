@@ -9,7 +9,8 @@ import {
   Calendar, 
   Clock, 
   ShieldCheck,
-  AlertCircle
+  AlertCircle,
+  Info
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Card, CardContent } from '../components/ui/card'
@@ -57,10 +58,10 @@ const HowToBorrow = () => {
         >
           <Info className="h-4 w-4" /> Comprehensive Guide
         </motion.div>
-        <h1 className="text-4xl font-extrabold tracking-tight md:text-6xl">
+        <h1 className="text-4xl font-extrabold tracking-tight md:text-6xl text-slate-900 dark:text-white">
            How to Borrow <span className="text-primary italic">Resources.</span>
         </h1>
-        <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto">
+        <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl max-w-2xl mx-auto">
            A simple process designed to help everyone in Barangay Ipil access what they need.
         </p>
       </div>
@@ -78,8 +79,8 @@ const HowToBorrow = () => {
                <step.icon className={`h-10 w-10 ${step.color}`} />
             </div>
             <div className="space-y-2">
-               <h3 className="text-xl font-bold">{step.title}</h3>
-               <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+               <h3 className="text-xl font-bold text-slate-900 dark:text-white">{step.title}</h3>
+               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{step.desc}</p>
             </div>
             {i < steps.length - 1 && (
                <div className="hidden lg:block absolute right-[-2.5rem] top-1/2 -translate-y-1/2 opacity-20">
@@ -91,7 +92,7 @@ const HowToBorrow = () => {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-         <Card className="glass-card border-none rounded-3xl overflow-hidden shadow-2xl relative">
+         <Card className="card-flat border-none rounded-3xl overflow-hidden shadow-xl relative bg-white dark:bg-slate-900">
             <div className="absolute top-0 right-0 p-8 opacity-10">
                <ShieldCheck className="h-24 w-24" />
             </div>
@@ -107,10 +108,10 @@ const HowToBorrow = () => {
                        <div className="mt-1 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                           <p.icon className="h-4 w-4 text-primary" />
                        </div>
-                       <div>
-                          <p className="font-bold">{p.label}</p>
-                          <p className="text-sm text-muted-foreground">{p.desc}</p>
-                       </div>
+                        <div>
+                           <p className="font-bold text-slate-900 dark:text-white">{p.label}</p>
+                           <p className="text-sm text-slate-600 dark:text-slate-400">{p.desc}</p>
+                        </div>
                     </div>
                   ))}
                </div>

@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 import Layout from './components/Layout';
+import PublicLayout from './components/PublicLayout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
@@ -34,12 +35,16 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* Public Routes with Navbar */}
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/items" element={<AvailableItems />} />
+              <Route path="/items/:id" element={<ItemDetails />} />
+              <Route path="/how-to-borrow" element={<HowToBorrow />} />
+            </Route>
+
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/items" element={<AvailableItems />} />
-            <Route path="/items/:id" element={<ItemDetails />} />
-            <Route path="/how-to-borrow" element={<HowToBorrow />} />
             
             {/* Admin Routes */}
             <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><Layout /></ProtectedRoute>}>

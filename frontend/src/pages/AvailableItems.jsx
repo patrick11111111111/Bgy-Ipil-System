@@ -11,7 +11,8 @@ const AvailableItems = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/inventory`)
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+        const response = await axios.get(`${apiUrl}/api/inventory`)
         // Filter out items that are actual borrow requests if needed, 
         // but for now we assume this returns all items the admin added.
         setItems(response.data)
@@ -75,7 +76,7 @@ const AvailableItems = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
-              className="group glass-card overflow-hidden rounded-2xl transition-all hover:shadow-2xl hover:shadow-primary/5"
+              className="group card-flat overflow-hidden rounded-2xl transition-all hover:shadow-lg"
             >
               <div className="h-48 w-full bg-accent relative overflow-hidden">
                 {item.picture ? (
@@ -92,8 +93,8 @@ const AvailableItems = () => {
                 </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold group-hover:text-primary transition-colors mb-2">{item.itemName}</h3>
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                <h3 className="text-xl font-bold group-hover:text-primary transition-colors mb-2 text-slate-900 dark:text-white">{item.itemName}</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4">
                   {item.description || "No description provided for this municipal resource."}
                 </p>
                 <div className="flex items-center justify-between mb-6">

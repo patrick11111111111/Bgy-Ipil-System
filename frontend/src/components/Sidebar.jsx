@@ -45,11 +45,11 @@ const Sidebar = () => {
   }
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r bg-card/50 backdrop-blur-xl">
+    <div className="flex h-screen w-64 flex-col border-r bg-card">
       <div className="flex h-20 items-center justify-between px-6 border-b">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-             <Box className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white p-1 shadow-sm">
+             <img src="/logo.jpg" alt="Logo" className="h-full w-full object-contain" />
           </div>
           <span className="text-xl font-bold tracking-tight">Barangay Ipil</span>
         </div>
@@ -67,10 +67,10 @@ const Sidebar = () => {
                 key={item.text}
                 to={item.path}
                 className={cn(
-                  "group flex items-center justify-between rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
+                  "group flex items-center justify-between rounded-xl px-3 py-2 text-sm font-medium",
                   isActive 
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    ? "bg-primary text-primary-foreground" 
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -86,11 +86,11 @@ const Sidebar = () => {
 
       <div className="mt-auto border-t p-4">
         <div className="flex items-center gap-3 px-3 py-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
             <User className="h-6 w-6" />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold">{user?.username}</span>
+            <span className="text-sm font-bold text-foreground">{user?.username}</span>
             <span className="text-xs text-muted-foreground capitalize">{user?.role}</span>
           </div>
         </div>

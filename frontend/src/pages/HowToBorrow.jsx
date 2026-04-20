@@ -128,5 +128,3 @@ const HowToBorrow = () => {
 }
 
 export default HowToBorrow
-
-export default HowToBorrow

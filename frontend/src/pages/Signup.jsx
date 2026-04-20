@@ -57,8 +57,8 @@ const Signup = () => {
       >
         <div className="glass-card rounded-3xl p-8 shadow-2xl">
           <div className="mb-8 flex flex-col items-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/20">
-              <UserPlus className="h-8 w-8 text-primary-foreground" />
+            <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-2xl bg-white p-2 shadow-lg">
+              <img src="/logo.jpg" alt="Barangay Ipil Logo" className="h-full w-full object-contain" />
             </div>
             <h1 className="text-3xl font-bold tracking-tight">Resident Registration</h1>
             <p className="text-muted-foreground mt-2">Join the municipal community portal</p>

@@ -48,8 +48,8 @@ const Sidebar = () => {
     <div className="flex h-screen w-64 flex-col border-r bg-card/50 backdrop-blur-xl">
       <div className="flex h-20 items-center justify-between px-6 border-b">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-             <Box className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white p-1 shadow-sm">
+             <img src="/logo.jpg" alt="Logo" className="h-full w-full object-contain" />
           </div>
           <span className="text-xl font-bold tracking-tight">Barangay Ipil</span>
         </div>

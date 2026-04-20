@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
-    <div className="flex flex-col gap-16 py-8">
+    <div className="flex flex-col gap-16 pb-8">
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-3xl bg-primary/10 p-8 md:p-16">
         <motion.div
@@ -37,9 +37,6 @@ const Home = () => {
           </div>
         </motion.div>
 
-        {/* Decorative elements */}
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute -bottom-20 left-1/2 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
       </section>
 
       {/* Features Grid */}

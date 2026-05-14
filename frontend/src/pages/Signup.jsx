@@ -15,7 +15,6 @@ const Signup = () => {
     age: '',
     gender: '',
     address: 'Echague, Isabela',
-    occupation: '',
   });
   const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
@@ -104,9 +103,6 @@ const Signup = () => {
                       <MenuItem value="Female">Female</MenuItem>
                       <MenuItem value="Other">Other</MenuItem>
                     </TextField>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField fullWidth required label="Occupation" name="occupation" value={residentData.occupation} onChange={handleResidentChange} />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField fullWidth required label="Address" name="address" value={residentData.address} onChange={handleResidentChange} />

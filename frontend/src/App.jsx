@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 import Layout from './components/Layout';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 
@@ -14,10 +15,13 @@ import Signup from './pages/Signup';
 import RegistrationPortal from './pages/RegistrationPortal';
 import ResidentList from './pages/ResidentList';
 import InventoryDashboard from './pages/InventoryDashboard';
+import AdminBorrowRequests from './pages/AdminBorrowRequests';
 
 // Resident Pages
 import ResidentProfile from './pages/resident/ResidentProfile';
-import ResidentInventory from './pages/resident/ResidentInventory';
+import ResidentAvailableItems from './pages/resident/ResidentAvailableItems';
+import ResidentMyRequests from './pages/resident/ResidentMyRequests';
+import ResidentHowToBorrow from './pages/resident/ResidentHowToBorrow';
 
 function App() {
   return (
@@ -26,7 +30,7 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             
@@ -35,12 +39,15 @@ function App() {
               <Route index element={<RegistrationPortal />} />
               <Route path="residents" element={<ResidentList />} />
               <Route path="inventory" element={<InventoryDashboard />} />
+              <Route path="requests" element={<AdminBorrowRequests />} />
             </Route>
 
             {/* Resident Routes */}
             <Route path="/resident" element={<ProtectedRoute allowedRoles={['resident']}><Layout /></ProtectedRoute>}>
               <Route index element={<ResidentProfile />} />
-              <Route path="inventory" element={<ResidentInventory />} />
+              <Route path="available-items" element={<ResidentAvailableItems />} />
+              <Route path="my-requests" element={<ResidentMyRequests />} />
+              <Route path="how-to-borrow" element={<ResidentHowToBorrow />} />
             </Route>
           </Routes>
         </Router>

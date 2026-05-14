@@ -7,7 +7,6 @@ const residentSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
   address: { type: String, required: true },
-  occupation: { type: String, required: true },
 }, { timestamps: true });
 
 export default mongoose.model('Resident', residentSchema);

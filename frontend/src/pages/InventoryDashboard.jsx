@@ -21,6 +21,7 @@ const InventoryDashboard = () => {
     condition: 'Good',
     quantity: '',
     presentedBy: '',
+    image: '',
   });
 
   useEffect(() => {
@@ -40,11 +41,22 @@ const InventoryDashboard = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, image: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/inventory`, formData);
-      setFormData({ itemName: '', condition: 'Good', quantity: '', presentedBy: '' });
+      setFormData({ itemName: '', condition: 'Good', quantity: '', presentedBy: '', image: '' });
       fetchInventory();
     } catch (error) {
       console.error('Error adding inventory:', error);
@@ -124,6 +136,7 @@ const InventoryDashboard = () => {
                 <TableHead sx={{ backgroundColor: 'rgba(183, 28, 28, 0.05)' }}>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 'bold' }}>Item Name</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }}>Image</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>Quantity</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>Condition</TableCell>
                     <TableCell sx={{ fontWeight: 'bold' }}>Requested By User</TableCell>
@@ -134,6 +147,9 @@ const InventoryDashboard = () => {
                   {pendingInventory.map((item) => (
                     <TableRow key={item._id} component={motion.tr} variants={itemVariants} hover>
                       <TableCell>{item.itemName}</TableCell>
+                      <TableCell>
+                        {item.image ? <img src={item.image} alt={item.itemName} style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }} /> : 'No image'}
+                      </TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>{item.condition}</TableCell>
                       <TableCell>{item.requestedBy ? item.requestedBy.username : 'Unknown'}</TableCell>
@@ -168,6 +184,17 @@ const InventoryDashboard = () => {
                     <MenuItem value="Damaged">Damaged</MenuItem>
                   </TextField>
                   <TextField required fullWidth label="Presented By" name="presentedBy" value={formData.presentedBy} onChange={handleChange} />
+                  
+                  <Box>
+                    <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>Item Picture</Typography>
+                    <input type="file" accept="image/*" onChange={handleImageChange} style={{ width: '100%' }} />
+                    {formData.image && (
+                      <Box sx={{ mt: 2 }}>
+                        <img src={formData.image} alt="Preview" style={{ maxWidth: '100%', maxHeight: '150px', borderRadius: 8 }} />
+                      </Box>
+                    )}
+                  </Box>
+
                   <Button type="submit" variant="contained" color="primary" fullWidth size="large">
                     Add Item
                   </Button>
@@ -184,6 +211,7 @@ const InventoryDashboard = () => {
               <TableHead sx={{ backgroundColor: 'rgba(26, 35, 126, 0.05)' }}>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold', color: '#1a237e' }}>Item Name</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#1a237e' }}>Image</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', color: '#1a237e' }}>Quantity</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', color: '#1a237e' }}>Condition</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', color: '#1a237e' }}>Presented By</TableCell>
@@ -195,6 +223,9 @@ const InventoryDashboard = () => {
                   approvedInventory.map((item) => (
                     <TableRow key={item._id} component={motion.tr} variants={itemVariants} hover>
                       <TableCell>{item.itemName}</TableCell>
+                      <TableCell>
+                        {item.image ? <img src={item.image} alt={item.itemName} style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }} /> : 'No image'}
+                      </TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>
                         <Box component="span" sx={{ 

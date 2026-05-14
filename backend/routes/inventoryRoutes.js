@@ -4,6 +4,16 @@ import { verifyToken, isAdmin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+// Get all approved inventory (Public)
+router.get('/public', async (req, res) => {
+  try {
+    const items = await Inventory.find({ status: 'Approved' }).sort({ createdAt: -1 });
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Get inventory items (Admin gets all, Resident gets their own)
 router.get('/', verifyToken, async (req, res) => {
   try {

@@ -5,6 +5,7 @@ const inventorySchema = new mongoose.Schema({
   condition: { type: String, enum: ['Good', 'Damaged'], required: true },
   quantity: { type: Number, required: true },
   presentedBy: { type: String, required: true },
+  image: { type: String }, // Base64 image
   status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: 'Pending' },
   requestedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 }, { timestamps: true });

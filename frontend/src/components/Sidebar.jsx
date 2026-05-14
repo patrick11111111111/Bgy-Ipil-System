@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Typography, Divider, Button } from '@mui/material';
-import { PersonAdd, People, Inventory, AccountCircle, ExitToApp } from '@mui/icons-material';
+import { PersonAdd, People, Inventory, AccountCircle, ExitToApp, Assignment, ListAlt, HelpOutline } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -15,11 +15,14 @@ const Sidebar = () => {
     { text: 'Registration Portal', icon: <PersonAdd />, path: '/admin' },
     { text: 'Resident List', icon: <People />, path: '/admin/residents' },
     { text: 'Inventory', icon: <Inventory />, path: '/admin/inventory' },
+    { text: 'Borrow Requests', icon: <Assignment />, path: '/admin/requests' },
   ];
 
   const residentMenu = [
     { text: 'My Profile', icon: <AccountCircle />, path: '/resident' },
-    { text: 'My Inventory', icon: <Inventory />, path: '/resident/inventory' },
+    { text: 'Available Items', icon: <Inventory />, path: '/resident/available-items' },
+    { text: 'My Requests', icon: <ListAlt />, path: '/resident/my-requests' },
+    { text: 'How to Borrow', icon: <HelpOutline />, path: '/resident/how-to-borrow' },
   ];
 
   const menuItems = user?.role === 'admin' ? adminMenu : residentMenu;

@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import residentRoutes from './routes/residentRoutes.js';
 import inventoryRoutes from './routes/inventoryRoutes.js';
+import borrowRoutes from './routes/borrowRoutes.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/residents', residentRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/borrow', borrowRoutes);
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/bgy-ipil')

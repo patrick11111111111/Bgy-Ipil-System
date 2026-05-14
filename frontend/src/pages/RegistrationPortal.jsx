@@ -11,7 +11,6 @@ const RegistrationPortal = () => {
     age: '',
     gender: '',
     address: 'Echague, Isabela',
-    occupation: '',
   });
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
@@ -31,7 +30,6 @@ const RegistrationPortal = () => {
         age: '',
         gender: '',
         address: 'Echague, Isabela',
-        occupation: '',
       });
     } catch (error) {
       setSnackbar({ open: true, message: 'Failed to register resident.', severity: 'error' });
@@ -85,9 +83,6 @@ const RegistrationPortal = () => {
                   </TextField>
                 </Grid>
 
-                <Grid item xs={12}>
-                  <TextField fullWidth required label="Occupation" name="occupation" value={formData.occupation} onChange={handleChange} />
-                </Grid>
                 <Grid item xs={12}>
                   <TextField fullWidth required label="Address" name="address" value={formData.address} onChange={handleChange} helperText="Context: Echague, Isabela" />
                 </Grid>

@@ -1,53 +1,69 @@
-import React from 'react'; // Force Vercel rebuild
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from './theme';
+import { ThemeProvider } from './components/ThemeProvider';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 import Layout from './components/Layout';
+import PublicLayout from './components/PublicLayout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Home from './pages/Home';
 
 // Admin Pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import BorrowRequestsManagement from './pages/admin/BorrowRequestsManagement';
+import InventoryManagement from './pages/admin/InventoryManagement';
+import Reports from './pages/admin/Reports';
+
+// Resident/Public Pages
+import AvailableItems from './pages/AvailableItems';
+import ItemDetails from './pages/ItemDetails';
+import HowToBorrow from './pages/HowToBorrow';
+import BorrowRequest from './pages/resident/BorrowRequest';
+import UserDashboard from './pages/resident/UserDashboard';
+import MyRequests from './pages/resident/MyRequests';
+
+// Old Pages (to be migrated/replaced)
 import RegistrationPortal from './pages/RegistrationPortal';
 import ResidentList from './pages/ResidentList';
 import InventoryDashboard from './pages/InventoryDashboard';
-import AdminBorrowRequests from './pages/AdminBorrowRequests';
-
-// Resident Pages
-import ResidentProfile from './pages/resident/ResidentProfile';
-import ResidentAvailableItems from './pages/resident/ResidentAvailableItems';
-import ResidentMyRequests from './pages/resident/ResidentMyRequests';
-import ResidentHowToBorrow from './pages/resident/ResidentHowToBorrow';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <ThemeProvider defaultTheme="light" storageKey="barangay-ui-theme">
       <AuthProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
+            {/* Public Routes with Navbar */}
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/items" element={<AvailableItems />} />
+              <Route path="/items/:id" element={<ItemDetails />} />
+              <Route path="/how-to-borrow" element={<HowToBorrow />} />
+            </Route>
+
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             
             {/* Admin Routes */}
             <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><Layout /></ProtectedRoute>}>
-              <Route index element={<RegistrationPortal />} />
+              <Route index element={<AdminDashboard />} />
+              <Route path="requests" element={<BorrowRequestsManagement />} />
+              <Route path="inventory" element={<InventoryManagement />} />
+              <Route path="reports" element={<Reports />} />
               <Route path="residents" element={<ResidentList />} />
-              <Route path="inventory" element={<InventoryDashboard />} />
-              <Route path="requests" element={<AdminBorrowRequests />} />
             </Route>
 
             {/* Resident Routes */}
-            <Route path="/resident" element={<ProtectedRoute allowedRoles={['resident']}><Layout /></ProtectedRoute>}>
-              <Route index element={<ResidentProfile />} />
-              <Route path="available-items" element={<ResidentAvailableItems />} />
-              <Route path="my-requests" element={<ResidentMyRequests />} />
-              <Route path="how-to-borrow" element={<ResidentHowToBorrow />} />
+            <Route path="/resident" element={<ProtectedRoute allowedRoles={['resident', 'admin']}><Layout /></ProtectedRoute>}>
+              <Route index element={<UserDashboard />} />
+              <Route path="borrow" element={<BorrowRequest />} />
+              <Route path="my-requests" element={<MyRequests />} />
             </Route>
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
       </AuthProvider>

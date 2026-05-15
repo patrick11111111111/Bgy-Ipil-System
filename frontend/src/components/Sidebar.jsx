@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Typography, Divider, Button } from '@mui/material';
-import { PersonAdd, People, Inventory, AccountCircle, ExitToApp, Assignment, ListAlt, HelpOutline } from '@mui/icons-material';
+import { PersonAdd, People, Inventory, AccountCircle, ExitToApp, Assignment, ListAlt, Help } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -22,7 +22,7 @@ const Sidebar = () => {
     { text: 'My Profile', icon: <AccountCircle />, path: '/resident' },
     { text: 'Available Items', icon: <Inventory />, path: '/resident/available-items' },
     { text: 'My Requests', icon: <ListAlt />, path: '/resident/my-requests' },
-    { text: 'How to Borrow', icon: <HelpOutline />, path: '/resident/how-to-borrow' },
+    { text: 'How to Borrow', icon: <Help />, path: '/resident/how-to-borrow' },
   ];
 
   const menuItems = user?.role === 'admin' ? adminMenu : residentMenu;

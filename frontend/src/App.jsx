@@ -1,10 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeProvider';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
-import Layout from './components/Layout';
 import PublicLayout from './components/PublicLayout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -25,9 +24,9 @@ import UserDashboard from './pages/resident/UserDashboard';
 import MyRequests from './pages/resident/MyRequests';
 
 // Old Pages (to be migrated/replaced)
-import RegistrationPortal from './pages/RegistrationPortal';
+
 import ResidentList from './pages/ResidentList';
-import InventoryDashboard from './pages/InventoryDashboard';
+
 
 function App() {
   return (

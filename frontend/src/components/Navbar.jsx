@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Box, Menu, X, LogIn, UserPlus } from 'lucide-react'
 import { Button } from './ui/button'
 import { ThemeToggle } from './ThemeToggle'
 import { cn } from '../lib/utils'
+import { AuthContext } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)

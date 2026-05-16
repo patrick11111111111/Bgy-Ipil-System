@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 import PublicLayout from './components/PublicLayout';
+import Layout from './components/Layout';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
@@ -23,10 +24,7 @@ import BorrowRequest from './pages/resident/BorrowRequest';
 import UserDashboard from './pages/resident/UserDashboard';
 import MyRequests from './pages/resident/MyRequests';
 
-// Old Pages (to be migrated/replaced)
-
 import ResidentList from './pages/ResidentList';
-
 
 function App() {
   return (
@@ -37,32 +35,32 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
 
+            {/* Public Routes with Navbar */}
             <Route element={<PublicLayout />}>
-              {/* Public Routes with Navbar */}
               <Route path="/" element={<Home />} />
               <Route path="/items" element={<AvailableItems />} />
               <Route path="/items/:id" element={<ItemDetails />} />
               <Route path="/how-to-borrow" element={<HowToBorrow />} />
-              
-              {/* Admin Routes */}
-              <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><Outlet /></ProtectedRoute>}>
-                <Route index element={<AdminDashboard />} />
-                <Route path="requests" element={<BorrowRequestsManagement />} />
-                <Route path="inventory" element={<InventoryManagement />} />
-                <Route path="reports" element={<Reports />} />
-                <Route path="residents" element={<ResidentList />} />
-              </Route>
-
-              {/* Resident Routes */}
-              <Route path="/resident" element={<ProtectedRoute allowedRoles={['resident', 'admin']}><Outlet /></ProtectedRoute>}>
-                <Route index element={<UserDashboard />} />
-                <Route path="borrow" element={<BorrowRequest />} />
-                <Route path="my-requests" element={<MyRequests />} />
-              </Route>
-
-              {/* Fallback */}
-              <Route path="*" element={<Navigate to="/" />} />
             </Route>
+
+            {/* Admin Routes with Sidebar */}
+            <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><Layout /></ProtectedRoute>}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="requests" element={<BorrowRequestsManagement />} />
+              <Route path="inventory" element={<InventoryManagement />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="residents" element={<ResidentList />} />
+            </Route>
+
+            {/* Resident Routes with Sidebar */}
+            <Route path="/resident" element={<ProtectedRoute allowedRoles={['resident', 'admin']}><Layout /></ProtectedRoute>}>
+              <Route index element={<UserDashboard />} />
+              <Route path="borrow" element={<BorrowRequest />} />
+              <Route path="my-requests" element={<MyRequests />} />
+            </Route>
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
       </AuthProvider>

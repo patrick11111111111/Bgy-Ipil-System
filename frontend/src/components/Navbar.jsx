@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Box, Menu, X, LogIn, UserPlus } from 'lucide-react'
 import { Button } from './ui/button'
 import { ThemeToggle } from './ThemeToggle'
 import { cn } from '../lib/utils'
 import { AuthContext } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  
+  const { user, logout } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,11 +23,34 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navLinks = [
+  const publicLinks = [
     { name: 'Home', path: '/' },
     { name: 'Available Items', path: '/items' },
     { name: 'How to Borrow', path: '/how-to-borrow' },
   ]
+
+  const residentLinks = [
+    { name: 'Dashboard', path: '/resident' },
+    { name: 'Available Items', path: '/items' },
+    { name: 'My Requests', path: '/resident/my-requests' },
+    { name: 'How to Borrow', path: '/how-to-borrow' },
+  ]
+
+  const adminLinks = [
+    { name: 'Dashboard', path: '/admin' },
+    { name: 'Borrow Requests', path: '/admin/requests' },
+    { name: 'Inventory', path: '/admin/inventory' },
+    { name: 'Reports', path: '/admin/reports' },
+    { name: 'Residents', path: '/admin/residents' },
+  ]
+
+  const navLinks = !user ? publicLinks : user.role === 'admin' ? adminLinks : residentLinks
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+    setIsOpen(false)
+  }
 
   return (
     <nav
@@ -65,16 +90,24 @@ const Navbar = () => {
             
             <div className="flex items-center gap-3 border-l pl-8">
               <ThemeToggle />
-              <Button asChild variant="ghost" className="rounded-full">
-                <Link to="/login" className="flex items-center gap-2">
-                  <LogIn className="h-4 w-4" /> Login
-                </Link>
-              </Button>
-              <Button asChild className="rounded-full shadow-sm">
-                <Link to="/signup" className="flex items-center gap-2">
-                  <UserPlus className="h-4 w-4" /> Signup
-                </Link>
-              </Button>
+              {!user ? (
+                <>
+                  <Button asChild variant="ghost" className="rounded-full">
+                    <Link to="/login" className="flex items-center gap-2">
+                      <LogIn className="h-4 w-4" /> Login
+                    </Link>
+                  </Button>
+                  <Button asChild className="rounded-full shadow-sm">
+                    <Link to="/signup" className="flex items-center gap-2">
+                      <UserPlus className="h-4 w-4" /> Signup
+                    </Link>
+                  </Button>
+                </>
+              ) : (
+                <Button onClick={handleLogout} variant="ghost" className="rounded-full text-rose-500 hover:text-rose-600 hover:bg-rose-500/10">
+                  <LogIn className="h-4 w-4 rotate-180 mr-2" /> Logout
+                </Button>
+              )}
             </div>
           </div>
 
@@ -116,12 +149,20 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="flex flex-col gap-3 mt-4 pt-4 border-t">
-                <Button asChild variant="outline" className="w-full rounded-2xl h-12">
-                  <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
-                </Button>
-                <Button asChild className="w-full rounded-2xl h-12">
-                  <Link to="/signup" onClick={() => setIsOpen(false)}>Signup</Link>
-                </Button>
+                {!user ? (
+                  <>
+                    <Button asChild variant="outline" className="w-full rounded-2xl h-12">
+                      <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                    </Button>
+                    <Button asChild className="w-full rounded-2xl h-12">
+                      <Link to="/signup" onClick={() => setIsOpen(false)}>Signup</Link>
+                    </Button>
+                  </>
+                ) : (
+                  <Button onClick={handleLogout} variant="outline" className="w-full rounded-2xl h-12 text-rose-500 hover:bg-rose-500/10">
+                    Logout
+                  </Button>
+                )}
               </div>
             </div>
           </motion.div>

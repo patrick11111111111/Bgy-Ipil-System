@@ -34,35 +34,35 @@ function App() {
       <AuthProvider>
         <Router>
           <Routes>
-            {/* Public Routes with Navbar */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
             <Route element={<PublicLayout />}>
+              {/* Public Routes with Navbar */}
               <Route path="/" element={<Home />} />
               <Route path="/items" element={<AvailableItems />} />
               <Route path="/items/:id" element={<ItemDetails />} />
               <Route path="/how-to-borrow" element={<HowToBorrow />} />
-            </Route>
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><Outlet /></ProtectedRoute>}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="requests" element={<BorrowRequestsManagement />} />
+                <Route path="inventory" element={<InventoryManagement />} />
+                <Route path="reports" element={<Reports />} />
+                <Route path="residents" element={<ResidentList />} />
+              </Route>
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><Layout /></ProtectedRoute>}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="requests" element={<BorrowRequestsManagement />} />
-              <Route path="inventory" element={<InventoryManagement />} />
-              <Route path="reports" element={<Reports />} />
-              <Route path="residents" element={<ResidentList />} />
-            </Route>
+              {/* Resident Routes */}
+              <Route path="/resident" element={<ProtectedRoute allowedRoles={['resident', 'admin']}><Outlet /></ProtectedRoute>}>
+                <Route index element={<UserDashboard />} />
+                <Route path="borrow" element={<BorrowRequest />} />
+                <Route path="my-requests" element={<MyRequests />} />
+              </Route>
 
-            {/* Resident Routes */}
-            <Route path="/resident" element={<ProtectedRoute allowedRoles={['resident', 'admin']}><Layout /></ProtectedRoute>}>
-              <Route index element={<UserDashboard />} />
-              <Route path="borrow" element={<BorrowRequest />} />
-              <Route path="my-requests" element={<MyRequests />} />
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" />} />
             </Route>
-
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
       </AuthProvider>

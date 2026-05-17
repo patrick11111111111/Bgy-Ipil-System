@@ -41,12 +41,17 @@ const Home = () => {
         </div>
         
         <div className="rounded-2xl border bg-slate-50 dark:bg-slate-900 p-2 shadow-sm overflow-hidden">
-          <div className="bg-white dark:bg-slate-950 rounded-xl border overflow-hidden shadow-inner">
-            <img 
-              src="/inventory_dashboard_screenshot_1776668938422.png" 
-              alt="Inventory Dashboard Screenshot" 
-              className="w-full h-auto opacity-90 hover:opacity-100 transition-opacity"
-            />
+          <div className="bg-white dark:bg-slate-950 rounded-xl border overflow-hidden shadow-inner flex flex-col items-center justify-center min-h-[400px] border-dashed border-2 p-10 text-center">
+            {/* INVENTORY DASHBOARD SCREENSHOT PLACEHOLDER */}
+            {/* Replace the div below with your actual img tag when ready, e.g.: */}
+            {/* <img src="/your_screenshot.png" alt="Inventory Dashboard" className="w-full h-auto opacity-90 hover:opacity-100 transition-opacity" /> */}
+            <div className="text-slate-400 dark:text-slate-600">
+              <svg className="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p className="text-lg font-bold mb-1 text-slate-500">Inventory Dashboard Screenshot Placeholder</p>
+              <p className="text-sm">Upload or drop your image here in the code.</p>
+            </div>
           </div>
         </div>
       </section>

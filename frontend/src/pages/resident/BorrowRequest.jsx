@@ -8,9 +8,11 @@ const BorrowRequest = () => {
   const [step, setStep] = useState(1)
   const [items, setItems] = useState([])
   const [formData, setFormData] = useState({
-    item: '',
+    itemId: '',
     purpose: '',
-    duration: '',
+    quantity: 1,
+    borrowDate: '',
+    returnDate: '',
     idFile: null
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -31,8 +33,8 @@ const BorrowRequest = () => {
     fetchItems()
 
     // Pre-select item if passed via state
-    if (location.state?.selectedItem) {
-      setFormData(prev => ({ ...prev, item: location.state.selectedItem }))
+    if (location.state?.selectedItemId) {
+      setFormData(prev => ({ ...prev, itemId: location.state.selectedItemId }))
     }
   }, [location.state])
 
@@ -52,13 +54,16 @@ const BorrowRequest = () => {
       await new Promise(resolve => setTimeout(resolve, 2000))
       
       const payload = {
-        itemName: formData.item,
-        quantity: 1, // Default to 1 for now
-        condition: 'Good',
-        presentedBy: formData.purpose, // Mapping purpose to presentedBy for now
+        itemId: formData.itemId,
+        quantity: formData.quantity,
+        borrowDate: formData.borrowDate,
+        returnDate: formData.returnDate,
+        purpose: formData.purpose,
       }
       
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/inventory`, payload)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/borrow`, payload, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       setIsSuccess(true)
     } catch (err) {
       console.error("Submission failed:", err)
@@ -132,15 +137,50 @@ const BorrowRequest = () => {
                       <select 
                         required
                         className="w-full rounded-xl border bg-background px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 font-medium"
-                        value={formData.item}
-                        onChange={(e) => setFormData({ ...formData, item: e.target.value })}
+                        value={formData.itemId}
+                        onChange={(e) => setFormData({ ...formData, itemId: e.target.value })}
                       >
                         <option value="">Choose an available item...</option>
                         {items.map(item => (
-                          <option key={item._id} value={item.itemName}>{item.itemName} ({item.quantity} available)</option>
+                          <option key={item._id} value={item._id}>{item.itemName} ({item.quantity} available)</option>
                         ))}
                       </select>
                     </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-muted-foreground">QUANTITY</label>
+                        <input 
+                          type="number"
+                          required
+                          min="1"
+                          className="w-full rounded-xl border bg-background px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 font-medium"
+                          value={formData.quantity}
+                          onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 1 })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-muted-foreground">BORROW DATE</label>
+                        <input 
+                          type="date"
+                          required
+                          className="w-full rounded-xl border bg-background px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 font-medium"
+                          value={formData.borrowDate}
+                          onChange={(e) => setFormData({ ...formData, borrowDate: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-bold text-muted-foreground">RETURN DATE</label>
+                        <input 
+                          type="date"
+                          required
+                          className="w-full rounded-xl border bg-background px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 font-medium"
+                          value={formData.returnDate}
+                          onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-muted-foreground">PURPOSE OF BORROWING</label>
                       <textarea 
@@ -155,7 +195,7 @@ const BorrowRequest = () => {
                 </div>
                 <button
                   type="button"
-                  disabled={!formData.item || !formData.purpose}
+                  disabled={!formData.itemId || !formData.purpose || !formData.borrowDate || !formData.returnDate}
                   onClick={() => setStep(2)}
                   className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary py-4 font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 disabled:opacity-50"
                 >
@@ -254,7 +294,8 @@ const BorrowRequest = () => {
                   <div className="divide-y rounded-2xl border bg-accent/10 overflow-hidden">
                     <div className="flex flex-col p-5 gap-1">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Selected Resource</span>
-                      <span className="font-bold text-lg">{formData.item}</span>
+                      <span className="font-bold text-lg">{items.find(i => i._id === formData.itemId)?.itemName} (x{formData.quantity})</span>
+                      <span className="text-sm text-muted-foreground">From: {formData.borrowDate} | To: {formData.returnDate}</span>
                     </div>
                     <div className="flex flex-col p-5 gap-1">
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Purpose</span>

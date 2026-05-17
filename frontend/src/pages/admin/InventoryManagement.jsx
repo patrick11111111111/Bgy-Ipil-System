@@ -45,12 +45,25 @@ const InventoryManagement = () => {
 
   const fetchInventory = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/inventory`)
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/inventory`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       setItems(response.data)
     } catch (err) {
       console.error("Error fetching inventory:", err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setNewItem({ ...newItem, picture: reader.result })
+      }
+      reader.readAsDataURL(file)
     }
   }
 
@@ -65,7 +78,9 @@ const InventoryManagement = () => {
         presentedBy: 'Admin (Catalog)', // required field in backend
         status: 'Approved' // Admin added items are auto-approved for catalog
       }
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/inventory`, payload)
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/inventory`, payload, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       fetchInventory()
       setIsModalOpen(false)
       setNewItem({ itemName: '', quantity: '', condition: 'Good', description: '', picture: '' })
@@ -77,7 +92,9 @@ const InventoryManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to remove this item?")) {
       try {
-        await axios.delete(`${import.meta.env.VITE_API_URL}/api/inventory/${id}`)
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/inventory/${id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
         fetchInventory()
       } catch (err) {
         console.error("Error deleting item:", err)
@@ -227,13 +244,16 @@ const InventoryManagement = () => {
 
                 <div className="grid gap-2">
                   <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                    <ImageIcon className="h-4 w-4" /> Item Picture URL
+                    <ImageIcon className="h-4 w-4" /> Item Picture
                   </label>
                   <Input 
-                    placeholder="https://..."
-                    value={newItem.picture}
-                    onChange={e => setNewItem({...newItem, picture: e.target.value})}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
                   />
+                  {newItem.picture && (
+                    <div className="mt-2 text-xs text-emerald-600 font-medium">Image ready for upload</div>
+                  )}
                 </div>
               </div>
 

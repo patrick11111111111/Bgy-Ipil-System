@@ -14,8 +14,10 @@ const MyRequests = () => {
   useEffect(() => {
     const fetchMyRequests = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/inventory`)
-        setRequests(response.data.filter(r => r.requestedBy?._id === user?._id || r.presentedBy === user?.username))
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/borrow/my-requests`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        })
+        setRequests(response.data)
       } catch (err) {
         console.error("Error fetching requests:", err)
       } finally {
@@ -73,7 +75,7 @@ const MyRequests = () => {
                     <Box className="h-7 w-7" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold">{request.itemName}</h3>
+                    <h3 className="text-xl font-bold">{request.itemId?.itemName || 'Item Removed'} (x{request.quantity})</h3>
                     <p className="text-sm text-muted-foreground">Requested on {new Date(request.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
@@ -91,11 +93,11 @@ const MyRequests = () => {
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 pt-6 border-t border-white/10">
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Purpose</span>
-                  <p className="text-sm font-medium">{request.presentedBy || 'General Use'}</p>
+                  <p className="text-sm font-medium">{request.purpose || 'General Use'}</p>
                 </div>
                 <div className="flex flex-col gap-1">
-                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Condition</span>
-                   <p className="text-sm font-medium">{request.condition}</p>
+                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Schedule</span>
+                   <p className="text-sm font-medium">{request.borrowDate && new Date(request.borrowDate).toLocaleDateString()} to {request.returnDate && new Date(request.returnDate).toLocaleDateString()}</p>
                 </div>
                 <div className="flex items-center justify-end md:col-start-2 lg:col-start-3">
                    <Button variant="ghost" className="text-xs font-bold gap-2 rounded-full">

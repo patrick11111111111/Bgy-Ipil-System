@@ -24,9 +24,10 @@ const BorrowRequestsManagement = () => {
 
   const fetchRequests = async () => {
     try {
-      // In this backend, inventory is the model for requests
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/inventory`)
-      // Filter out items that are not 'Pending' or handle them all
+      // Fetch real borrow requests
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/borrow`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       setRequests(response.data)
     } catch (err) {
       console.error("Error fetching requests:", err)
@@ -37,7 +38,9 @@ const BorrowRequestsManagement = () => {
 
   const handleAction = async (id, status) => {
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/api/inventory/${id}`, { status })
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/borrow/${id}/status`, { status }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       fetchRequests()
     } catch (err) {
       console.error(`Error updating request to ${status}:`, err)
@@ -81,7 +84,7 @@ const BorrowRequestsManagement = () => {
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-bold">{request.itemName}</h3>
+                    <h3 className="text-xl font-bold">{request.itemId?.itemName || 'Item Removed'} (x{request.quantity})</h3>
                     <Badge variant={
                       request.status === 'Pending' ? 'secondary' :
                       request.status === 'Approved' ? 'default' : 'destructive'
@@ -89,9 +92,11 @@ const BorrowRequestsManagement = () => {
                       {request.status}
                     </Badge>
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground font-medium">
-                    <span className="flex items-center gap-1.5"><User className="h-3.5 w-3.5" /> {request.presentedBy || 'Anonymous'}</span>
-                    <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {new Date(request.createdAt).toLocaleDateString()}</span>
+                  <div className="flex flex-col gap-1 text-sm text-muted-foreground font-medium mt-1">
+                    <span className="flex items-center gap-1.5"><User className="h-3.5 w-3.5" /> Resident: {request.userId?.username || 'Unknown'}</span>
+                    <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> Requested: {new Date(request.createdAt).toLocaleDateString()}</span>
+                    <span className="flex items-center gap-1.5">Schedule: {request.borrowDate && new Date(request.borrowDate).toLocaleDateString()} - {request.returnDate && new Date(request.returnDate).toLocaleDateString()}</span>
+                    <span className="flex items-center gap-1.5">Purpose: {request.purpose}</span>
                   </div>
                 </div>
               </div>

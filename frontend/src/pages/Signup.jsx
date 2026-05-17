@@ -16,7 +16,6 @@ const Signup = () => {
     age: '',
     gender: '',
     address: 'Echague, Isabela',
-    occupation: '',
   })
   const [error, setError] = useState('')
   const { login } = useContext(AuthContext)
@@ -31,7 +30,7 @@ const Signup = () => {
       setError('Please fill in both username and password')
       return
     }
-    if (currentStep === 2 && (!residentData.firstName || !residentData.lastName || !residentData.age || !residentData.gender)) {
+    if (currentStep === 2 && (!residentData.firstName || !residentData.lastName || !residentData.age || !residentData.gender || !residentData.address)) {
       setError('Please fill in all required personal details')
       return
     }
@@ -46,8 +45,8 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!residentData.occupation || !residentData.address) {
-      setError('Please fill in your occupation and address')
+    if (!residentData.address) {
+      setError('Please fill in your address')
       return
     }
     try {
@@ -97,13 +96,13 @@ const Signup = () => {
             
             {/* Step Indicator */}
             <div className="mt-4 flex items-center gap-2">
-              {[1, 2, 3].map((s) => (
+              {[1, 2].map((s) => (
                 <div 
                   key={s} 
                   className={`h-1.5 w-6 rounded-full transition-colors ${s <= currentStep ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-800'}`} 
                 />
               ))}
-              <span className="ml-2 text-xs font-bold text-slate-400 uppercase tracking-widest">Step {currentStep} of 3</span>
+              <span className="ml-2 text-xs font-bold text-slate-400 uppercase tracking-widest">Step {currentStep} of 2</span>
             </div>
           </div>
 
@@ -222,43 +221,18 @@ const Signup = () => {
                         className={inputClass}
                       />
                     </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {currentStep === 3 && (
-                <motion.div
-                  key="step3"
-                  variants={stepVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="space-y-4"
-                >
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                      <Briefcase className="h-4 w-4" /> Occupation
-                    </label>
-                    <input
-                      name="occupation"
-                      required
-                      placeholder="e.g. Teacher, Farmer"
-                      value={residentData.occupation}
-                      onChange={handleResidentChange}
-                      className={inputClass}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
-                      <MapPin className="h-4 w-4" /> Address
-                    </label>
-                    <input
-                      name="address"
-                      required
-                      value={residentData.address}
-                      onChange={handleResidentChange}
-                      className={inputClass}
-                    />
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                        <MapPin className="h-4 w-4" /> Address
+                      </label>
+                      <input
+                        name="address"
+                        required
+                        value={residentData.address}
+                        onChange={handleResidentChange}
+                        className={inputClass}
+                      />
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -276,7 +250,7 @@ const Signup = () => {
               </button>
             )}
             
-            {currentStep < 3 ? (
+            {currentStep < 2 ? (
               <button
                 type="button"
                 onClick={nextStep}

@@ -43,7 +43,7 @@ const PublicLayout = () => {
       <footer className="relative z-10 border-t py-6 bg-white dark:bg-slate-900">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-sm">
-            <p className="text-slate-500">© 2024 Barangay Ipil. All rights reserved.</p>
+            <p className="text-slate-500">© 2026 Barangay Ipil. All rights reserved.</p>
             <div className="flex gap-6 text-slate-500 font-medium">
               <button 
                 onClick={() => setActiveModal('privacy')}

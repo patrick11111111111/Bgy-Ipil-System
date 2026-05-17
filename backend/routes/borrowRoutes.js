@@ -28,10 +28,14 @@ router.get('/my-requests', verifyToken, async (req, res) => {
 // Create a new borrow request
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { itemId } = req.body;
+    const { itemId, quantity, borrowDate, returnDate, purpose } = req.body;
     const newRequest = new BorrowRequest({
       itemId,
       userId: req.user.id,
+      quantity,
+      borrowDate,
+      returnDate,
+      purpose,
       status: 'Pending'
     });
     const savedRequest = await newRequest.save();
